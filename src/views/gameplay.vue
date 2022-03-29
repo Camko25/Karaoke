@@ -33,42 +33,37 @@
 </template>
 
 <script>
+/* eslint-disable */
 
-    export default {
+export default {
+  data() {
+    return {
+      timerCount: null,
+    };
+  },
 
-        data() {
-            return {
-                timerCount: null
-            }
-        },
-
-        watch: {
-
-            timerCount: {
-                handler(value) {
-
-                    if (value > 0) {
-                        setTimeout(() => {
-                            this.timerCount--;
-                        }, 1000);
-                    }
-                    if (value == 0){
-                      this.timerCount= null
-                      // gamePlay()  toto bude callovat celu tu hru
-                    }
-
-                },
-                deep: true
-            }
-
-        },
-        methods:{
-          changeValue(){
-            this.timerCount = 5
-          }
-        },
-    }
-
+  watch: {
+    timerCount: {
+      handler(value) {
+        if (value > 0) {
+          setTimeout(() => {
+            this.timerCount--;
+          }, 1000);
+        }
+        if (value == 0) {
+          this.timerCount = null;
+          // gamePlay()  toto bude callovat celu tu hru
+        }
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    changeValue() {
+      this.timerCount = 5;
+    },
+  },
+};
 </script>
 
 <style scoped>
