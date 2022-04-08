@@ -10,69 +10,64 @@
         <div class="w-screen h-[150px] py-9 text-center font-semibold text-7xl">
           {{ timerCount }}
         </div>
-
         <div class="w-screen h-[240px] bg-stone-800 flex flex-col">
           <div
-            class="h-80 w-6 bg-cyan-300 absolute opacity-75 left-48 top-[160px] rounded-lg"
+            class="h-80 w-6 bg-cyan-300 absolute opacity-75 left-[13vw] top-[160px] rounded-lg"
           ></div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
             <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[80vw] rounded-xl"
-            ></div>
-            <div
-              ref="movin"
+              ref="movin3"
               class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
-            ></div>
+            >
+              3
+            </div>
             <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[40vw] rounded-xl"
-            ></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[20vw] rounded-xl"
-            ></div>
+              ref="movin2"
+              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+            >
+              3
+            </div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
             <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[95vw] rounded-xl"
-            ></div>
+              ref="movin0"
+              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+            >
+              0
+            </div>
+            <div
+              ref="movin1"
+              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+            >
+              0
+            </div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[40vw] rounded-xl"
-            ></div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[90vw] rounded-xl"
-            ></div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[90vw] rounded-xl"
-            ></div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[90vw] rounded-xl"
-            ></div>
           </div>
         </div>
         <div class="h-10 w-screen my-6 text-center">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             v-if="!isHidden"
-            @click="changeValue(), (isHidden = true)"
+            @click="(isHidden = true), changeValue()"
           >
             start
           </button>
@@ -99,8 +94,6 @@
           </button>
         </div>
       </section>
-      <!-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="recordAudio()">record</button>
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="stopRecording()">stopRecording</button> -->
     </div>
   </body>
 </template>
@@ -111,46 +104,38 @@
 export default {
   data() {
     return {
-      timerCount: null,
+      timerCount: 3,
       recorder: null,
       chunks: [],
       hidden: 1,
       device: null,
       blobObj: null,
       starter: false,
-    };
-  },
-
-  watch: {
-    timerCount: {
-      handler(value) {
-        if (value > 0) {
-          setTimeout(() => {
-            this.timerCount--;
-          }, 1000);
-        }
-        if (value == 0) {
-          this.timerCount = null;
-        }
-        if (this.timerCount == null) {
-          this.gamePlay();
-        }
-        console.log(this.timerCount);
-      },
-      deep: true,
-    },
+    }
   },
   methods: {
     changeValue() {
-      this.timerCount = 3;
+      let timer = setInterval(() => {
+        this.timerCount--
+        console.log(this.timerCount)
+        if (this.timerCount == 0) {
+          clearInterval(timer)
+          this.timerCount = null
+          this.gamePlay()
+        }
+      }, 1000)
     },
+
     gamePlay() {
-      this.playAudio();
-      this.goMove();
+      this.playAudio()
+      setTimeout(() => this.move(this.$refs.movin0), 430)
+      setTimeout(() => this.move(this.$refs.movin1), 800)
+      setTimeout(() => this.move(this.$refs.movin2), 1500)
+      setTimeout(() => this.move(this.$refs.movin3), 2000)
     },
     playAudio() {
-      var audio = new Audio(require("../assets/audio/guitarChords.mp3"));
-      audio.play();
+      var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
+      audio.play()
     },
     // recordAudio() {
     //   this.device = navigator.mediaDevices.getUserMedia({ audio: true });
@@ -184,21 +169,37 @@ export default {
     //     track.stop()
     //   });
     // },
-    goMove() {
-      let square = this.$refs.movin
-      let x = 97.5;
-      let intervalo = setInterval(() => {
-        x = x - 0.1;
-        square.style.left = x + "vw";
+
+    move(square) {
+      let x = 97.5
+      let pohyb = setInterval(() => {
+        x = x - 0.1
+        square.style.left = x + "vw"
         square.style.display = "block"
+        if (square.style.left == 13 + "vw") square.style.backgroundColor = '#1d18c4'
         if (square.style.left < -15 + "vw") {
-          clearInterval(intervalo)
+          clearInterval(pohyb)
           square.style.left = null
+          square.style.display = null
         }
       }, 5)
     },
+    // move(value) {
+    //   let squares = [this.$refs.movin1]
+    //   let x = 97.5
+    //   let pohyb = setInterval(() => {
+    //     x = x - 0.1
+    //     squares.style.left = x + "vw"
+    //     squares.style.display = "block"
+    //     if (squares.style.left < -30 + "vw") {
+    //       clearInterval(pohyb)
+    //       squares.style.left = null
+    //       squares.style.display = null
+    //     }
+    //   }, 5)
+    // },
   },
-};
+}
 </script>
 
 <style scoped>
