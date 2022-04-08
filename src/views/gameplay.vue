@@ -137,38 +137,38 @@ export default {
       var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
       audio.play()
     },
-    // recordAudio() {
-    //   this.device = navigator.mediaDevices.getUserMedia({ audio: true });
-    //   this.device.then((stream) => {
-    //     this.recorder = new MediaRecorder(stream);
-    //     this.recorder.ondataavailable = (e) => {
-    //       this.chunks.push(e.data);
-    //       if (this.recorder.state == "inactive") {
-    //         let blob = new Blob(this.chunks, { type: "audio/wav" });
-    //         // save to blobObj
-    //         this.blobObj = blob;
-    //         this.chunks = [];
-    //         // emit to parent
-    //         this.$emit("send-audio", this.blobObj);
-    //         this.blobObj = null;
-    //       }
-    //     };
-    //     // start
-    //     this.recorder.start();
-    //   });
-    //   setInterval(() => {
-    //     console.log(this.recorder.state);
-    //   }, 2000);
-    // },
-    // stop() {
-    //   // stop
-    //   this.recorder.stop()
-    // },
-    // stopListening() {
-    //   this.recorder.getAudioTracks().forEach((track) => {
-    //     track.stop()
-    //   });
-    // },
+    recordAudio() {
+      this.device = navigator.mediaDevices.getUserMedia({ audio: true });
+      this.device.then((stream) => {
+        this.recorder = new MediaRecorder(stream);
+        this.recorder.ondataavailable = (e) => {
+          this.chunks.push(e.data);
+          if (this.recorder.state == "inactive") {
+            let blob = new Blob(this.chunks, { type: "audio/wav" });
+            // save to blobObj
+            this.blobObj = blob;
+            this.chunks = [];
+            // emit to parent
+            this.$emit("send-audio", this.blobObj);
+            this.blobObj = null;
+          }
+        };
+        // start
+        this.recorder.start();
+      });
+      setInterval(() => {
+        console.log(this.recorder.state);
+      }, 2000);
+    },
+    stop() {
+      // stop
+      this.recorder.stop()
+    },
+    stopListening() {
+      this.recorder.getAudioTracks().forEach((track) => {
+        track.stop()
+      });
+    },
 
     move(square) {
       let x = 97.5
