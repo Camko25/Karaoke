@@ -68,9 +68,6 @@
             ></div>
           </div>
         </div>
-        <!-- <div class="h-20 py-4 mx-auto ">
-                <div class=" bg-white w-20 h-14 py-3 text-center text-2xl font-medium text-black rounded-3xl">69</div>
-            </div> -->
         <div class="h-10 w-screen my-6 text-center">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -155,38 +152,38 @@ export default {
       var audio = new Audio(require("../assets/audio/guitarChords.mp3"));
       audio.play();
     },
-    recordAudio() {
-      this.device = navigator.mediaDevices.getUserMedia({ audio: true });
-      this.device.then((stream) => {
-        this.recorder = new MediaRecorder(stream);
-        this.recorder.ondataavailable = (e) => {
-          this.chunks.push(e.data);
-          if (this.recorder.state == "inactive") {
-            let blob = new Blob(this.chunks, { type: "audio/wav" });
-            // save to blobObj
-            this.blobObj = blob;
-            this.chunks = [];
-            // emit to parent
-            this.$emit("send-audio", this.blobObj);
-            this.blobObj = null;
-          }
-        };
-        // start
-        this.recorder.start();
-      });
-      setInterval(() => {
-        console.log(this.recorder.state);
-      }, 2000);
-    },
-    stop() {
-      // stop
-      this.recorder.stop()
-    },
-    stopListening() {
-      this.recorder.getAudioTracks().forEach((track) => {
-        track.stop()
-      });
-    },
+    // recordAudio() {
+    //   this.device = navigator.mediaDevices.getUserMedia({ audio: true });
+    //   this.device.then((stream) => {
+    //     this.recorder = new MediaRecorder(stream);
+    //     this.recorder.ondataavailable = (e) => {
+    //       this.chunks.push(e.data);
+    //       if (this.recorder.state == "inactive") {
+    //         let blob = new Blob(this.chunks, { type: "audio/wav" });
+    //         // save to blobObj
+    //         this.blobObj = blob;
+    //         this.chunks = [];
+    //         // emit to parent
+    //         this.$emit("send-audio", this.blobObj);
+    //         this.blobObj = null;
+    //       }
+    //     };
+    //     // start
+    //     this.recorder.start();
+    //   });
+    //   setInterval(() => {
+    //     console.log(this.recorder.state);
+    //   }, 2000);
+    // },
+    // stop() {
+    //   // stop
+    //   this.recorder.stop()
+    // },
+    // stopListening() {
+    //   this.recorder.getAudioTracks().forEach((track) => {
+    //     track.stop()
+    //   });
+    // },
     goMove() {
       let square = this.$refs.movin
       let x = 97.5;
@@ -196,7 +193,7 @@ export default {
         square.style.display = "block"
         if (square.style.left < -15 + "vw") {
           clearInterval(intervalo)
-          square.style.display = "none";
+          square.style.left = null
         }
       }, 5)
     },
