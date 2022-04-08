@@ -22,17 +22,14 @@
               class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[80vw] rounded-xl"
             ></div>
             <div
-              id="movin"
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[60vw] rounded-xl"
+              ref="movin"
+              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
             ></div>
             <div
               class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[40vw] rounded-xl"
             ></div>
             <div
               class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[20vw] rounded-xl"
-            ></div>
-            <div
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] left-[0vw] rounded-xl"
             ></div>
           </div>
 
@@ -148,19 +145,18 @@ export default {
   },
   methods: {
     changeValue() {
-      this.timerCount = 5;
+      this.timerCount = 3;
     },
     gamePlay() {
       this.playAudio();
       this.goMove();
     },
     playAudio() {
-      var audio = new Audio(require("../assets/audio/Guitar Chords.mp3"));
+      var audio = new Audio(require("../assets/audio/guitarChords.mp3"));
       audio.play();
     },
     recordAudio() {
       this.device = navigator.mediaDevices.getUserMedia({ audio: true });
-      setInterval(function () {}, 5000);
       this.device.then((stream) => {
         this.recorder = new MediaRecorder(stream);
         this.recorder.ondataavailable = (e) => {
@@ -184,23 +180,25 @@ export default {
     },
     stop() {
       // stop
-      this.recorder.stop();
+      this.recorder.stop()
     },
     stopListening() {
       this.recorder.getAudioTracks().forEach((track) => {
-        track.stop();
+        track.stop()
       });
     },
     goMove() {
-      console.log("bezi");
-      let x = 97;
-      let square = document.getElementById("movin");
-      if (x > -1) {
-        setInterval(() => {
-          x--;
-          square.style.left = x + "vw";
-        }, 200);
-      }
+      let square = this.$refs.movin
+      let x = 97.5;
+      let intervalo = setInterval(() => {
+        x = x - 0.1;
+        square.style.left = x + "vw";
+        square.style.display = "block"
+        if (square.style.left < -15 + "vw") {
+          clearInterval(intervalo)
+          square.style.display = "none";
+        }
+      }, 5)
     },
   },
 };
@@ -215,9 +213,5 @@ export default {
     #96068e,
     #6e0660
   );
-}
-#movin {
-  position: absolute;
-  left: 97vw;
 }
 </style>
