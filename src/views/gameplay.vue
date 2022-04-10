@@ -66,8 +66,8 @@
         <div class="h-10 w-screen my-6 text-center">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            v-if="!isHidden"
-            @click="(isHidden = true), changeValue()"
+            v-if="this.isHidden == false"
+            @click="hiddenState(), changeValue()"
           >
             start
           </button>
@@ -111,9 +111,13 @@ export default {
       device: null,
       blobObj: null,
       starter: false,
+      isHidden: false
     }
   },
   methods: {
+    hiddenState(){
+      this.isHidden = true
+    },
     changeValue() {
       let timer = setInterval(() => {
         this.timerCount--
@@ -137,6 +141,34 @@ export default {
       var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
       audio.play()
     },
+      move(square) {
+        let x = 97.5
+        let pohyb = setInterval(() => {
+          x = x - 0.1
+          square.style.left = x + "vw"
+          square.style.display = "block"
+          if (square.style.left == 13 + "vw") square.style.backgroundColor = '#1d18c4'
+          if (square.style.left < -15 + "vw") {
+            clearInterval(pohyb)
+            square.style.left = null
+            square.style.display = null
+          }
+        }, 5)
+      },
+      // move(value) {
+      //   let squares = [this.$refs.movin1]
+      //   let x = 97.5
+      //   let pohyb = setInterval(() => {
+      //     x = x - 0.1
+      //     squares.style.left = x + "vw"
+      //     squares.style.display = "block"
+      //     if (squares.style.left < -30 + "vw") {
+      //       clearInterval(pohyb)
+      //       squares.style.left = null
+      //       squares.style.display = null
+      //     }
+      //   }, 5)
+      // },
     recordAudio() {
       this.device = navigator.mediaDevices.getUserMedia({ audio: true });
       this.device.then((stream) => {
@@ -170,34 +202,6 @@ export default {
       });
     },
 
-    move(square) {
-      let x = 97.5
-      let pohyb = setInterval(() => {
-        x = x - 0.1
-        square.style.left = x + "vw"
-        square.style.display = "block"
-        if (square.style.left == 13 + "vw") square.style.backgroundColor = '#1d18c4'
-        if (square.style.left < -15 + "vw") {
-          clearInterval(pohyb)
-          square.style.left = null
-          square.style.display = null
-        }
-      }, 5)
-    },
-    // move(value) {
-    //   let squares = [this.$refs.movin1]
-    //   let x = 97.5
-    //   let pohyb = setInterval(() => {
-    //     x = x - 0.1
-    //     squares.style.left = x + "vw"
-    //     squares.style.display = "block"
-    //     if (squares.style.left < -30 + "vw") {
-    //       clearInterval(pohyb)
-    //       squares.style.left = null
-    //       squares.style.display = null
-    //     }
-    //   }, 5)
-    // },
   },
 }
 </script>
