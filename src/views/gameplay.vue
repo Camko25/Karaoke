@@ -19,13 +19,13 @@
             <div class="h-[8px] w-screen bg-slate-300"></div>
             <div
               ref="movin3"
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+              class="note_3"
             >
               3
             </div>
             <div
               ref="movin2"
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+              class="note_3"
             >
               3
             </div>
@@ -35,15 +35,15 @@
             <div class="h-[8px] w-screen bg-slate-300"></div>
             <div
               ref="movin0"
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+              class="note_9"
             >
-              0
+              9
             </div>
             <div
               ref="movin1"
-              class="h-8 w-12 bg-green-400 absolute bottom-[-4px] rounded-xl hidden"
+              class="note_5"
             >
-              0
+              5
             </div>
           </div>
 
@@ -129,7 +129,7 @@ export default {
       }, 10000)
     },
     move(square) {
-      let x = 97.5
+      let x = 95.5
       let pohyb = setInterval(() => {
         x = x - 0.1
         square.style.left = x + "vw"
@@ -197,14 +197,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.rgb-background {
-  background: linear-gradient(
-    -45deg,
-    rgb(243, 63, 153),
-    #bd2672,
-    #96068e,
-    #6e0660
-  );
-}
-</style>
