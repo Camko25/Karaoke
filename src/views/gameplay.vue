@@ -72,27 +72,6 @@
             start
           </button>
         </div>
-        <div>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            @click="(hidden = 0), recordAudio()"
-          >
-            RECORD
-          </button>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            v-if="hidden == 0"
-            @click="(hidden = 1), stop()"
-          >
-            STOPRECORDING
-          </button>
-          <button
-            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounder"
-            @click="stopListening()"
-          >
-            STOPLISTENING
-          </button>
-        </div>
       </section>
     </div>
   </body>
@@ -105,17 +84,19 @@ export default {
   data() {
     return {
       timerCount: 3,
+      hidden: 1,
+      isHidden: false,
+      audio: null,
       recorder: null,
       chunks: [],
-      hidden: 1,
-      device: null,
       blobObj: null,
+      device: null,
       starter: false,
-      isHidden: false
     }
   },
+
   methods: {
-    hiddenState(){
+    hiddenState() {
       this.isHidden = true
     },
     changeValue() {
@@ -131,7 +112,10 @@ export default {
     },
 
     gamePlay() {
+      this.recordAudio()
+      console.log(this.device)
       this.playAudio()
+      // this.compareSound()
       setTimeout(() => this.move(this.$refs.movin0), 430)
       setTimeout(() => this.move(this.$refs.movin1), 800)
       setTimeout(() => this.move(this.$refs.movin2), 1500)
@@ -140,68 +124,75 @@ export default {
     playAudio() {
       var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
       audio.play()
+      setTimeout(() =>{
+        console.log(audio)
+      }, 10000)
     },
-      move(square) {
-        let x = 97.5
-        let pohyb = setInterval(() => {
-          x = x - 0.1
-          square.style.left = x + "vw"
-          square.style.display = "block"
-          if (square.style.left == 13 + "vw") square.style.backgroundColor = '#1d18c4'
-          if (square.style.left < -15 + "vw") {
-            clearInterval(pohyb)
-            square.style.left = null
-            square.style.display = null
-          }
-        }, 5)
-      },
-      // move(value) {
-      //   let squares = [this.$refs.movin1]
-      //   let x = 97.5
-      //   let pohyb = setInterval(() => {
-      //     x = x - 0.1
-      //     squares.style.left = x + "vw"
-      //     squares.style.display = "block"
-      //     if (squares.style.left < -30 + "vw") {
-      //       clearInterval(pohyb)
-      //       squares.style.left = null
-      //       squares.style.display = null
-      //     }
-      //   }, 5)
-      // },
+    move(square) {
+      let x = 97.5
+      let pohyb = setInterval(() => {
+        x = x - 0.1
+        square.style.left = x + "vw"
+        square.style.display = "block"
+        if (square.style.left == 13 + "vw")
+          square.style.backgroundColor = "#1d18c4"
+        if (square.style.left < -15 + "vw") {
+          clearInterval(pohyb)
+          square.style.left = null
+          square.style.display = null
+        }
+      }, 5)
+    },
     recordAudio() {
-      this.device = navigator.mediaDevices.getUserMedia({ audio: true });
-      this.device.then((stream) => {
-        this.recorder = new MediaRecorder(stream);
-        this.recorder.ondataavailable = (e) => {
-          this.chunks.push(e.data);
-          if (this.recorder.state == "inactive") {
-            let blob = new Blob(this.chunks, { type: "audio/wav" });
-            // save to blobObj
-            this.blobObj = blob;
-            this.chunks = [];
-            // emit to parent
-            this.$emit("send-audio", this.blobObj);
-            this.blobObj = null;
+      this.device = navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          this.recorder = new MediaRecorder(stream)
+          console.log(this.recorder.state)
+          this.recorder.ondataavailable = (e) => {
+            this.chunks.push(e.data)
+            if (this.recorder.state == "inactive") {
+              let blob = new Blob(this.chunks, { type: "audio/wav" })
+              // save to blobObj
+              this.blobObj = blob
+              this.chunks = []
+              // emit to parent
+              this.$emit("send-audio", this.blobObj)
+              console.log(this.blobObj)
+              this.blobObj = null
+            }
           }
-        };
-        // start
-        this.recorder.start();
-      });
-      setInterval(() => {
-        console.log(this.recorder.state);
-      }, 2000);
+          // start
+          this.recorder.start()
+        })
+        setTimeout(() =>{
+          this.recorder.stop()
+        },5000)
+        setTimeout(() =>{
+          console.log(this.chunks)
+        },5100)
+        setInterval(() =>{
+          console.log(this.recorder.state , "B")
+        }, 1000)
     },
-    stop() {
-      // stop
-      this.recorder.stop()
-    },
-    stopListening() {
-      this.recorder.getAudioTracks().forEach((track) => {
-        track.stop()
-      });
-    },
+    // stop() {
+    //   // stop
+    //   this.recorder.stop()
+    // },
 
+    // compareSound(){
+    //   var audioCtx = new Audio(require("@/assets/audio/twinkle.mp3"))
+    //   analyser = audioCtx.createAnalyser()
+    //   analyser.fftSize = 1024
+    //   var bufferLength = analyser.frequencyBinCount
+    //   var dataArray = new Uint8Array(bufferLength);
+    //   analyser.getByteTimeDomainData(dataArray);
+    //   setInterval(() => {
+    //     console.log(analyser)
+    //   })
+
+    //   audio.connect(analyser)
+    // },
   },
 }
 </script>
