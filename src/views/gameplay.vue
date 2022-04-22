@@ -112,7 +112,7 @@ export default {
     },
 
     gamePlay() {
-      this.recordAudio()
+      // this.recordAudio()
       console.log(this.device)
       this.playAudio()
       // this.compareSound()
@@ -124,7 +124,7 @@ export default {
     playAudio() {
       var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
       audio.play()
-      setTimeout(() =>{
+      setTimeout(() => {
         console.log(audio)
       }, 10000)
     },
@@ -165,15 +165,15 @@ export default {
           // start
           this.recorder.start()
         })
-        setTimeout(() =>{
-          this.recorder.stop()
-        },5000)
-        setTimeout(() =>{
-          console.log(this.chunks)
-        },5100)
-        setInterval(() =>{
-          console.log(this.recorder.state , "B")
-        }, 1000)
+      setTimeout(() => {
+        this.recorder.stop()
+      }, 5000)
+      setTimeout(() => {
+        console.log(this.chunks)
+      }, 5100)
+      setInterval(() => {
+        console.log(this.recorder.state, "B")
+      }, 1000)
     },
     // stop() {
     //   // stop
