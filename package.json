@@ -46,7 +46,8 @@
     },
     "rules": {
       "vue/multi-word-component-names": ["error", {
-        "ignores": ["gameplay"]
+        "ignores": ["gameplay", "levels"]
+
       }]
     }
   },
