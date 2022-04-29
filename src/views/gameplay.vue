@@ -4,7 +4,7 @@
       <section class="rgb-background w-screen h-screen flex flex-col">
         <header class="topbanner">
           <div class="h-12 w-24">
-            <h4 class="text-center p-3"><a href="home"> <img class="logo" src="./images/logoKaraoke.png"></a></h4>
+            <h4 class="text-center p-3"><a href="home"> <img class="logo" src="@/assets/images/logoKaraoke.png"></a></h4>
           </div>
         </header>
         <div class="w-screen h-[150px] py-9 text-center font-semibold text-7xl">
