@@ -1,15 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 .rgb-background {
-    background: linear-gradient(
-      -45deg,
-      rgb(243, 63, 153),
-      #bd2672,
-      #96068e,
-      #6e0660
-    );
+    background: linear-gradient( -45deg, rgb(243, 63, 153), #bd2672, #96068e, #6e0660);
 }
 
 .note_0 {
@@ -205,4 +198,17 @@
     color: azure;
     padding-top: 4px;
     border-radius: 3px;
+}
+
+.topbanner {
+    position: static;
+    width: 100%;
+    height: 80px;
+    background-color: gray;
+}
+
+.logo {
+    position: static;
+    width: 60px;
+    height: 60px;
 }
