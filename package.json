@@ -44,6 +44,7 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
+<<<<<<< HEAD
       "vue/multi-word-component-names": [
         "error",
         {
@@ -52,6 +53,12 @@
           ]
         }
       ]
+=======
+      "vue/multi-word-component-names": ["error", {
+        "ignores": ["gameplay", "levels"]
+
+      }]
+>>>>>>> 52a548deafa57fddc7fdfaad32561f90358e13bf
     }
   },
   "browserslist": [

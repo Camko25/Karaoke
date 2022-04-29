@@ -17,34 +17,14 @@
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              ref="movin3"
-              class="note_3"
-            >
-              3
-            </div>
-            <div
-              ref="movin2"
-              class="note_3"
-            >
-              3
-            </div>
+            <div ref="movin3" class="note_3">3</div>
+            <div ref="movin2" class="note_3">3</div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
             <div class="h-[8px] w-screen bg-slate-300"></div>
-            <div
-              ref="movin0"
-              class="note_9"
-            >
-              9
-            </div>
-            <div
-              ref="movin1"
-              class="note_5"
-            >
-              5
-            </div>
+            <div ref="movin0" class="note_0">0</div>
+            <div ref="movin1" class="note_0">0</div>
           </div>
 
           <div id="string" class="h-[24px] w-screen my-[8px] py-2 relative">
@@ -72,6 +52,11 @@
             start
           </button>
         </div>
+        <div class="h-10 w-screen my-6 text-center">
+          <button v-if="this.listen == 1" class="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="listenTo()">
+                vypocuj si ako si hral
+          </button>
+        </div>
       </section>
     </div>
   </body>
@@ -87,11 +72,13 @@ export default {
       hidden: 1,
       isHidden: false,
       audio: null,
+      playback: null,
       recorder: null,
       chunks: [],
-      blobObj: null,
+      blob: null,
       device: null,
       starter: false,
+      listen: 0
     }
   },
 
@@ -112,7 +99,7 @@ export default {
     },
 
     gamePlay() {
-      // this.recordAudio()
+      this.recordAudio()
       console.log(this.device)
       this.playAudio()
       // this.compareSound()
@@ -122,10 +109,10 @@ export default {
       setTimeout(() => this.move(this.$refs.movin3), 2000)
     },
     playAudio() {
-      var audio = new Audio(require("@/assets/audio/twinkle.mp3"))
-      audio.play()
+      this.audio = new Audio(require("@/assets/audio/twinkle.mp3"))
+      this.audio.play()
       setTimeout(() => {
-        console.log(audio)
+        this.audio.pause()
       }, 10000)
     },
     move(square) {
@@ -152,29 +139,34 @@ export default {
           this.recorder.ondataavailable = (e) => {
             this.chunks.push(e.data)
             if (this.recorder.state == "inactive") {
-              let blob = new Blob(this.chunks, { type: "audio/wav" })
-              // save to blobObj
-              this.blobObj = blob
-              this.chunks = []
-              // emit to parent
-              this.$emit("send-audio", this.blobObj)
-              console.log(this.blobObj)
-              this.blobObj = null
+            this.blob = new Blob(this.chunks)
+            const audioUrl = URL.createObjectURL(this.blob)
+            this.playback = new Audio(audioUrl)
             }
           }
           // start
           this.recorder.start()
         })
+        .catch((err) => {
+          alert(err.name + ": " + err.message)
+        })
       setTimeout(() => {
         this.recorder.stop()
-      }, 5000)
+        this.listen = 1
+      }, 10000)
       setTimeout(() => {
         console.log(this.chunks)
       }, 5100)
+      setTimeout(() => {
+        console.log(this.chunks)
+      }, 11100)
       setInterval(() => {
-        console.log(this.recorder.state, "B")
+        console.log(this.recorder.state, "2")
       }, 1000)
     },
+    listenTo() {
+    this.playback.play()
+    }
     // stop() {
     //   // stop
     //   this.recorder.stop()
@@ -196,4 +188,3 @@ export default {
   },
 }
 </script>
-
